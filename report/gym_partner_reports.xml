@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Reporte: Ficha de Inscripción del Socio -->
+        <record id="action_report_gym_partner_inscription" model="ir.actions.report">
+            <field name="name">Ficha de Inscripción</field>
+            <field name="model">gym.partner</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gym_management.report_gym_partner_inscription</field>
+            <field name="report_file">gym_management.report_gym_partner_inscription</field>
+            <field name="binding_model_id" ref="model_gym_partner"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Reporte: Recibo de Pago -->
+        <record id="action_report_gym_subscription_receipt" model="ir.actions.report">
+            <field name="name">Recibo de Pago</field>
+            <field name="model">gym.subscription</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gym_management.report_gym_subscription_receipt</field>
+            <field name="report_file">gym_management.report_gym_subscription_receipt</field>
+            <field name="binding_model_id" ref="model_gym_subscription"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

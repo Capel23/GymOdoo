@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_gym_instructor_all","gym.instructor access all","model_gym_instructor","base.group_user",1,1,1,1
+"access_gym_instructor_manager","gym.instructor access manager","model_gym_instructor","base.group_erp_manager",1,1,1,1
+"access_gym_class_all","gym.class access all","model_gym_class","base.group_user",1,1,1,1
+"access_gym_class_manager","gym.class access manager","model_gym_class","base.group_erp_manager",1,1,1,1
+"access_gym_subscription_all","gym.subscription access all","model_gym_subscription","base.group_user",1,1,1,1
+"access_gym_subscription_manager","gym.subscription access manager","model_gym_subscription","base.group_erp_manager",1,1,1,1
+"access_gym_partner_all","gym.partner access all","model_gym_partner","base.group_user",1,1,1,1
+"access_gym_partner_manager","gym.partner access manager","model_gym_partner","base.group_erp_manager",1,1,1,1

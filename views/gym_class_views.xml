@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menú Principal (creado aquí) -->
+        <menuitem id="menu_gym_root" name="Gimnasio" sequence="70"/>
+
+        <!-- Vista de lista para Clases -->
+        <record id="gym_class_list" model="ir.ui.view">
+            <field name="name">gym.class.list</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <list string="Clases" decoration-info="state == 'draft'" decoration-success="state == 'active'"
+                      decoration-danger="occupancy_rate >= 100" decoration-warning="occupancy_rate >= 80 and occupancy_rate &lt; 100">
+                    <field name="name"/>
+                    <field name="class_type"/>
+                    <field name="instructor_id"/>
+                    <field name="day_of_week"/>
+                    <field name="current_enrollment"/>
+                    <field name="capacity"/>
+                    <field name="available_spots"/>
+                    <field name="occupancy_rate" string="Ocupación (%)"/>
+                    <field name="price"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para Clases -->
+        <record id="gym_class_form" model="ir.ui.view">
+            <field name="name">gym.class.form</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <form string="Clase">
+                    <header>
+                        <button name="action_activate" type="object" string="Activar" 
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_cancel" type="object" string="Cancelar" 
+                                class="btn-secondary" invisible="state != 'active'"/>
+                        <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre de la Clase"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="class_type"/>
+                                <field name="instructor_id"/>
+                            </group>
+                            <group>
+                                <field name="price"/>
+                            </group>
+                        </group>
+                        <separator string="Horario y Capacidad"/>
+                        <group>
+                            <group>
+                                <field name="day_of_week"/>
+                                <field name="start_time" widget="float_time"/>
+                                <field name="duration"/>
+                            </group>
+                            <group>
+                                <field name="capacity"/>
+                                <field name="current_enrollment" readonly="1"/>
+                                <field name="available_spots" readonly="1"/>
+                                <field name="occupancy_rate" string="Ocupación (%)" readonly="1"/>
+                            </group>
+                        </group>
+                        <separator string="Descripción"/>
+                        <field name="description"/>
+                        <separator string="Suscriptores"/>
+                        <field name="subscription_ids" readonly="1">
+                            <list>
+                                <field name="partner_id"/>
+                                <field name="plan_type"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                        <field name="active" invisible="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda para Clases -->
+        <record id="gym_class_search" model="ir.ui.view">
+            <field name="name">gym.class.search</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Nombre"/>
+                    <field name="class_type" string="Tipo de Clase"/>
+                    <field name="instructor_id" string="Instructor"/>
+                    <separator/>
+                    <filter name="active_classes" string="Activas" domain="[('state', '=', 'active')]"/>
+                    <filter name="draft_classes" string="Borradores" domain="[('state', '=', 'draft')]"/>
+                    <filter name="cancelled_classes" string="Canceladas" domain="[('state', '=', 'cancelled')]"/>
+                    <separator/>
+                    <filter name="available" string="Con espacios disponibles" 
+                            domain="[('available_spots', '>', 0)]"/>
+                    <filter name="full" string="Llenas" domain="[('available_spots', '=', 0)]"/>
+                    <separator/>
+                    <filter name="group_type" string="Tipo de Clase" context="{'group_by': 'class_type'}"/>
+                    <filter name="group_instructor" string="Instructor" context="{'group_by': 'instructor_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para abrir listado de Clases -->
+        <record id="action_gym_class" model="ir.actions.act_window">
+            <field name="name">Clases</field>
+            <field name="res_model">gym.class</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_create">
+                    Haz clic para crear una nueva clase
+                </p>
+            </field>
+        </record>
+
+        <!-- Menú para Clases -->
+        <menuitem id="menu_gym_class" name="Clases" 
+                  parent="menu_gym_root" action="action_gym_class" sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- VISTAS DE ANÁLISIS PARA SUSCRIPCIONES -->
+        
+        <!-- Vista Graph: Ingresos por Mes -->
+        <record id="gym_subscription_graph_income" model="ir.ui.view">
+            <field name="name">gym.subscription.graph.income</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <graph string="Ingresos por Mes" type="line" stacked="False">
+                    <field name="start_date" type="row" interval="month"/>
+                    <field name="monthly_fee" type="measure" operator="sum"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vista Graph: Comparativa de Planes -->
+        <record id="gym_subscription_graph_plans" model="ir.ui.view">
+            <field name="name">gym.subscription.graph.plans</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <graph string="Distribución de Planes" type="pie">
+                    <field name="plan_type" type="row"/>
+                    <field name="monthly_fee" type="measure" operator="sum"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vista Pivot: Ingresos por Tipo de Plan -->
+        <record id="gym_subscription_pivot" model="ir.ui.view">
+            <field name="name">gym.subscription.pivot</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Ingresos">
+                    <field name="plan_type" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="monthly_fee" type="measure" operator="sum"/>
+                    <field name="amount_paid" type="measure" operator="sum"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Acción para vista de análisis de ingresos -->
+        <record id="action_gym_subscription_analysis" model="ir.actions.act_window">
+            <field name="name">Análisis de Ingresos</field>
+            <field name="res_model">gym.subscription</field>
+            <field name="view_mode">graph,pivot,list,form</field>
+            <field name="context">{'graph_measure': 'monthly_fee'}</field>
+        </record>
+
+        <!-- VISTAS DE ANÁLISIS PARA CLASES -->
+        
+        <!-- Vista Graph: Ocupación por Tipo de Clase -->
+        <record id="gym_class_graph_occupation" model="ir.ui.view">
+            <field name="name">gym.class.graph.occupation</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <graph string="Ocupación por Tipo de Clase" type="bar">
+                    <field name="class_type" type="row"/>
+                    <field name="current_enrollment" type="measure" operator="sum"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vista Graph: Capacidad vs Ocupación -->
+        <record id="gym_class_graph_capacity" model="ir.ui.view">
+            <field name="name">gym.class.graph.capacity</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <graph string="Capacidad vs Ocupación" type="bar">
+                    <field name="class_type" type="row"/>
+                    <field name="capacity" type="measure" operator="sum"/>
+                    <field name="current_enrollment" type="measure" operator="sum"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Acción para vista de análisis de clases -->
+        <record id="action_gym_class_analysis" model="ir.actions.act_window">
+            <field name="name">Análisis de Clases</field>
+            <field name="res_model">gym.class</field>
+            <field name="view_mode">graph,list,form</field>
+        </record>
+
+        <!-- VISTAS DE ANÁLISIS PARA INSTRUCTORES E INGRESOS -->
+        
+        <!-- Vista Pivot: Profesores vs Ingresos Generados -->
+        <record id="gym_instructor_pivot" model="ir.ui.view">
+            <field name="name">gym.instructor.pivot</field>
+            <field name="model">gym.instructor</field>
+            <field name="arch" type="xml">
+                <pivot string="Profesores vs Ingresos Generados">
+                    <field name="name" type="row"/>
+                    <field name="total_classes" type="measure" operator="sum"/>
+                    <field name="total_students" type="measure" operator="sum"/>
+                    <field name="total_income" type="measure" operator="sum"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Acción para vista de análisis de instructores -->
+        <record id="action_gym_instructor_analysis" model="ir.actions.act_window">
+            <field name="name">Análisis de Instructores</field>
+            <field name="res_model">gym.instructor</field>
+            <field name="view_mode">pivot,list,form</field>
+        </record>
+
+        <!-- VISTAS DE ANÁLISIS PARA SOCIOS -->
+        
+        <!-- Vista Graph: Socios por Estado -->
+        <record id="gym_partner_graph_state" model="ir.ui.view">
+            <field name="name">gym.partner.graph.state</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <graph string="Distribución de Socios por Estado" type="pie">
+                    <field name="state" type="row"/>
+                    <field name="registration_date" type="measure" operator="count"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vista Graph: Evolución de Socios -->
+        <record id="gym_partner_graph_evolution" model="ir.ui.view">
+            <field name="name">gym.partner.graph.evolution</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <graph string="Evolución de Socios Registrados" type="line">
+                    <field name="registration_date" type="row" interval="month"/>
+                    <field name="registration_date" type="measure" operator="count"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vista Pivot: Socios por Estado y Mes de Registro -->
+        <record id="gym_partner_pivot" model="ir.ui.view">
+            <field name="name">gym.partner.pivot</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Socios">
+                    <field name="state" type="row"/>
+                    <field name="registration_date" type="col" interval="month"/>
+                    <field name="registration_date" type="measure" operator="count"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Acción para vista de análisis de socios -->
+        <record id="action_gym_partner_analysis" model="ir.actions.act_window">
+            <field name="name">Análisis de Socios</field>
+            <field name="res_model">gym.partner</field>
+            <field name="view_mode">graph,pivot,list</field>
+        </record>
+
+        <!-- MENÚ PARA ANÁLISIS Y REPORTES -->
+        <menuitem id="menu_gym_analysis" name="Análisis" 
+                  parent="menu_gym_root" sequence="90"/>
+
+        <menuitem id="menu_gym_analysis_income" name="Análisis de Ingresos" 
+                  parent="menu_gym_analysis" action="action_gym_subscription_analysis" sequence="10"/>
+
+        <menuitem id="menu_gym_analysis_classes" name="Análisis de Clases" 
+                  parent="menu_gym_analysis" action="action_gym_class_analysis" sequence="20"/>
+
+        <menuitem id="menu_gym_analysis_instructors" name="Análisis de Instructores" 
+                  parent="menu_gym_analysis" action="action_gym_instructor_analysis" sequence="30"/>
+
+        <menuitem id="menu_gym_analysis_partners" name="Análisis de Socios" 
+                  parent="menu_gym_analysis" action="action_gym_partner_analysis" sequence="40"/>
+    </data>
+</odoo>

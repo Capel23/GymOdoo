@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista para Instructores -->
+        <record id="gym_instructor_list" model="ir.ui.view">
+            <field name="name">gym.instructor.list</field>
+            <field name="model">gym.instructor</field>
+            <field name="arch" type="xml">
+                <list string="Instructores" decoration-info="state == 'inactive'">
+                    <field name="name"/>
+                    <field name="specializations"/>
+                    <field name="total_classes"/>
+                    <field name="state"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para Instructores -->
+        <record id="gym_instructor_form" model="ir.ui.view">
+            <field name="name">gym.instructor.form</field>
+            <field name="model">gym.instructor</field>
+            <field name="arch" type="xml">
+                <form string="Instructor">
+                    <header>
+                        <button name="toggle_active" type="object" string="Cambiar Estado" 
+                                class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Instructor"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="state" widget="statusbar"/>
+                                <field name="email"/>
+                                <field name="phone"/>
+                                <field name="specializations"/>
+                            </group>
+                            <group>
+                                <field name="image_1920" widget="image" options="{'preview_image': 'image_128'}"/>
+                            </group>
+                        </group>
+                        <separator string="Información General"/>
+                        <group>
+                            <field name="bio"/>
+                        </group>
+                        <separator string="Clases Asignadas"/>
+                        <group>
+                            <field name="total_classes"/>
+                            <field name="total_students"/>
+                            <field name="total_income"/>
+                        </group>
+                        <field name="class_ids" readonly="1">
+                            <list string="Clases">
+                                <field name="name"/>
+                                <field name="class_type"/>
+                                <field name="day_of_week"/>
+                                <field name="current_enrollment"/>
+                                <field name="capacity"/>
+                            </list>
+                        </field>
+                        <field name="active" invisible="1"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda para Instructores -->
+        <record id="gym_instructor_search" model="ir.ui.view">
+            <field name="name">gym.instructor.search</field>
+            <field name="model">gym.instructor</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Nombre"/>
+                    <field name="specializations" string="Especialidad"/>
+                    <filter name="active" string="Activos" domain="[('active', '=', True)]"/>
+                    <filter name="inactive" string="Inactivos" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para abrir listado de Instructores -->
+        <record id="action_gym_instructor" model="ir.actions.act_window">
+            <field name="name">Instructores</field>
+            <field name="res_model">gym.instructor</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_create">
+                    Haz clic para crear un nuevo instructor
+                </p>
+            </field>
+        </record>
+
+        <!-- Menú para Instructores -->
+        <menuitem id="menu_gym_instructor" name="Instructores" 
+                  parent="menu_gym_root" action="action_gym_instructor" sequence="10"/>
+    </data>
+</odoo>

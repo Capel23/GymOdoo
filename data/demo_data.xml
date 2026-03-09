@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Instructores de Demostración -->
+        <record id="instructor_demo_1" model="gym.instructor">
+            <field name="name">Juan Pérez Flores</field>
+            <field name="email">juan.perez@gimnasio.com</field>
+            <field name="phone">555-1001</field>
+            <field name="specializations">Yoga, Pilates</field>
+            <field name="bio">Instructor certificado en Yoga Hatha y Pilates con 8 años de experiencia. Enfocado en flexibilidad y bienestar.</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="instructor_demo_2" model="gym.instructor">
+            <field name="name">María García López</field>
+            <field name="email">maria.garcia@gimnasio.com</field>
+            <field name="phone">555-1002</field>
+            <field name="specializations">CrossFit, Boxeo</field>
+            <field name="bio">Especialista en CrossFit y entrenamiento de fuerza. Finalista en competencias nacionales.</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="instructor_demo_3" model="gym.instructor">
+            <field name="name">Carlos Rodríguez Martínez</field>
+            <field name="email">carlos.rodriguez@gimnasio.com</field>
+            <field name="phone">555-1003</field>
+            <field name="specializations">Spinning, Zumba</field>
+            <field name="bio">Instructor de ciclismo indoor y danza. Experto en crear coreografías motivantes.</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Clases de Demostración -->
+        <record id="class_demo_1" model="gym.class">
+            <field name="name">Yoga Matutino</field>
+            <field name="class_type">yoga</field>
+            <field name="instructor_id" ref="instructor_demo_1"/>
+            <field name="description">Clase de Yoga tradicional enfocada en flexibilidad y relajación.</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">6.5</field>
+            <field name="duration">60</field>
+            <field name="capacity">20</field>
+            <field name="price">35</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="class_demo_2" model="gym.class">
+            <field name="name">CrossFit Avanzado</field>
+            <field name="class_type">crossfit</field>
+            <field name="instructor_id" ref="instructor_demo_2"/>
+            <field name="description">Entrenamiento de alta intensidad para usuarios avanzados.</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">17.5</field>
+            <field name="duration">60</field>
+            <field name="capacity">15</field>
+            <field name="price">50</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="class_demo_3" model="gym.class">
+            <field name="name">Spinning Nocturno</field>
+            <field name="class_type">spinning</field>
+            <field name="instructor_id" ref="instructor_demo_3"/>
+            <field name="description">Clase de ciclismo indoor con música motivadora.</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">18.0</field>
+            <field name="duration">45</field>
+            <field name="capacity">25</field>
+            <field name="price">40</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Socios de Demostración -->
+        <record id="partner_demo_1" model="gym.partner">
+            <field name="name">Roberto Sánchez Díaz</field>
+            <field name="email">roberto.sanchez@email.com</field>
+            <field name="phone">555-2001</field>
+            <field name="mobile">999-1001</field>
+            <field name="id_type">dni</field>
+            <field name="id_number">12345678</field>
+            <field name="city">Lima</field>
+            <field name="blood_type">o_pos</field>
+            <field name="state">active</field>
+            <field name="registration_date">2024-01-15</field>
+        </record>
+
+        <record id="partner_demo_2" model="gym.partner">
+            <field name="name">Patricia Hernández Vega</field>
+            <field name="email">patricia.hernandez@email.com</field>
+            <field name="phone">555-2002</field>
+            <field name="mobile">999-1002</field>
+            <field name="id_type">dni</field>
+            <field name="id_number">87654321</field>
+            <field name="city">Lima</field>
+            <field name="blood_type">a_pos</field>
+            <field name="state">active</field>
+            <field name="registration_date">2024-02-20</field>
+        </record>
+
+        <record id="partner_demo_3" model="gym.partner">
+            <field name="name">Andrés Morales Castillo</field>
+            <field name="email">andres.morales@email.com</field>
+            <field name="phone">555-2003</field>
+            <field name="mobile">999-1003</field>
+            <field name="id_type">dni</field>
+            <field name="id_number">55555555</field>
+            <field name="city">Lima</field>
+            <field name="blood_type">b_pos</field>
+            <field name="state">prospect</field>
+            <field name="registration_date">2026-03-01</field>
+        </record>
+
+        <!-- Suscripciones de Demostración -->
+        <record id="subscription_demo_1" model="gym.subscription">
+            <field name="partner_id" ref="partner_demo_1"/>
+            <field name="plan_type">basic</field>
+            <field name="description">Plan básico con acceso a clases seleccionadas</field>
+            <field name="start_date">2026-01-01</field>
+            <field name="end_date">2026-03-31</field>
+            <field name="monthly_fee">150</field>
+            <field name="discount">0</field>
+            <field name="amount_paid">150</field>
+            <field name="unlimited_classes">False</field>
+            <field name="state">active</field>
+            <field name="payment_method">transfer</field>
+        </record>
+
+        <record id="subscription_demo_2" model="gym.subscription">
+            <field name="partner_id" ref="partner_demo_2"/>
+            <field name="plan_type">premium</field>
+            <field name="description">Plan premium con acceso a todas las clases</field>
+            <field name="start_date">2026-02-01</field>
+            <field name="end_date">2026-04-30</field>
+            <field name="monthly_fee">300</field>
+            <field name="discount">10</field>
+            <field name="amount_paid">270</field>
+            <field name="unlimited_classes">True</field>
+            <field name="state">active</field>
+            <field name="payment_method">card</field>
+        </record>
+
+        <record id="subscription_demo_3" model="gym.subscription">
+            <field name="partner_id" ref="partner_demo_3"/>
+            <field name="plan_type">vip</field>
+            <field name="description">Plan VIP con entrenador personal</field>
+            <field name="start_date">2026-03-01</field>
+            <field name="end_date">2026-06-30</field>
+            <field name="monthly_fee">500</field>
+            <field name="discount">0</field>
+            <field name="amount_paid">0</field>
+            <field name="unlimited_classes">True</field>
+            <field name="state">draft</field>
+            <field name="payment_method">cash</field>
+            <field name="notes">Próximo a activar. Cliente interesado en entrenamiento personalizado.</field>
+        </record>
+    </data>
+</odoo>

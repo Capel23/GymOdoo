@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista para Socios -->
+        <record id="gym_partner_list" model="ir.ui.view">
+            <field name="name">gym.partner.list</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <list string="Socios" decoration-success="state == 'active'" 
+                      decoration-danger="state == 'suspended'" decoration-info="state == 'prospect'">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="mobile"/>
+                    <field name="registration_date"/>
+                    <field name="total_paid"/>
+                    <field name="total_pending"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de kanban para Socios -->
+        <record id="gym_partner_kanban" model="ir.ui.view">
+            <field name="name">gym.partner.kanban</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card">
+                                <div class="oe_kanban_card_header">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <p>
+                                        <strong>Email:</strong>
+                                        <field name="email"/>
+                                    </p>
+                                    <p>
+                                        <strong>Teléfono:</strong>
+                                        <field name="mobile"/>
+                                    </p>
+                                    <p>
+                                        <strong>Total Pagado:</strong>
+                                        <field name="total_paid"/>
+                                    </p>
+                                    <p>
+                                        <strong>Pendiente:</strong>
+                                        <field name="total_pending"/>
+                                    </p>
+                                </div>
+                                <div class="oe_kanban_footer">
+                                    <button name="action_mark_active" type="object" string="Activar"
+                                            class="btn btn-sm btn-primary" invisible="state not in ('prospect','suspended')"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para Socios -->
+        <record id="gym_partner_form" model="ir.ui.view">
+            <field name="name">gym.partner.form</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <form string="Socio">
+                    <header>
+                        <button name="action_mark_active" type="object" string="Marcar Activo" 
+                                class="btn-primary" invisible="state not in ('prospect','suspended')"/>
+                        <button name="action_mark_suspended" type="object" string="Suspender" 
+                                class="btn-secondary" invisible="state != 'active'"/>
+                        <button name="action_mark_inactive" type="object" string="Marcar Inactivo" 
+                                class="btn-danger" invisible="state not in ('active','suspended')"/>
+                        <button name="action_create_subscription" type="object" string="Nueva Suscripción" 
+                                class="btn-primary"/>
+                        <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_subscriptions" type="object" class="oe_stat_button" icon="fa-list">
+                                <field string="Suscripciones" name="subscription_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre Completo"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="image_1920" widget="image" 
+                                       options="{'preview_image': 'image_128'}"/>
+                            </group>
+                            <group>
+                                <field name="email"/>
+                                <field name="phone"/>
+                                <field name="mobile"/>
+                                <field name="registration_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Información Personal">
+                                <group>
+                                    <group string="Documento de Identidad">
+                                        <field name="id_type"/>
+                                        <field name="id_number"/>
+                                    </group>
+                                    <group string="Dirección">
+                                        <field name="street" placeholder="Calle"/>
+                                        <field name="number" placeholder="Número"/>
+                                        <field name="city" placeholder="Ciudad"/>
+                                        <field name="state_id" placeholder="Departamento"/>
+                                        <field name="zip_code" placeholder="Código Postal"/>
+                                        <field name="country" placeholder="País"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Información Médica">
+                                <group>
+                                    <field name="blood_type"/>
+                                    <field name="allergies"/>
+                                    <field name="medical_conditions"/>
+                                </group>
+                                <separator string="Contacto de Emergencia"/>
+                                <group>
+                                    <field name="emergency_contact"/>
+                                    <field name="emergency_phone"/>
+                                </group>
+                            </page>
+                            <page string="Suscripciones">
+                                <field name="subscription_ids">
+                                    <list string="Suscripciones">
+                                        <field name="plan_type"/>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="monthly_fee"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Información Financiera">
+                                <group>
+                                    <field name="total_paid"/>
+                                    <field name="total_pending"/>
+                                </group>
+                                <group>
+                                    <field name="active_subscription_id" readonly="1"/>
+                                    <field name="last_visit" readonly="1"/>
+                                    <field name="attendance_count" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <field name="active" invisible="1"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda para Socios -->
+        <record id="gym_partner_search" model="ir.ui.view">
+            <field name="name">gym.partner.search</field>
+            <field name="model">gym.partner</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Nombre"/>
+                    <field name="email" string="Email"/>
+                    <field name="mobile" string="Teléfono"/>
+                    <field name="id_number" string="Documento"/>
+                    <separator/>
+                    <filter name="active_partners" string="Activos" domain="[('state', '=', 'active')]"/>
+                    <filter name="prospects" string="Prospectos" domain="[('state', '=', 'prospect')]"/>
+                    <filter name="suspended" string="Suspendidos" domain="[('state', '=', 'suspended')]"/>
+                    <filter name="inactive" string="Inactivos" domain="[('state', '=', 'inactive')]"/>
+                    <separator/>
+                    <filter name="with_pending" string="Con saldo pendiente" domain="[('total_pending', '>', 0)]"/>
+                    <separator/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                    <filter name="group_registration" string="Mes de Registro" context="{'group_by': 'registration_date:month'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para abrir listado de Socios -->
+        <record id="action_gym_partner" model="ir.actions.act_window">
+            <field name="name">Socios</field>
+            <field name="res_model">gym.partner</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_create">
+                    Haz clic para registrar un nuevo socio
+                </p>
+            </field>
+        </record>
+
+        <!-- Menú para Socios -->
+        <menuitem id="menu_gym_partner" name="Socios" 
+                  parent="menu_gym_root" action="action_gym_partner" sequence="1"/>
+    </data>
+</odoo>

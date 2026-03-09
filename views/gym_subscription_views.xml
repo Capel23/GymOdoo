@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista para Suscripciones -->
+        <record id="gym_subscription_list" model="ir.ui.view">
+            <field name="name">gym.subscription.list</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <list string="Suscripciones" decoration-success="state == 'active'" 
+                      decoration-danger="state == 'expired'" decoration-warning="state == 'paused'">
+                    <field name="partner_id"/>
+                    <field name="plan_type"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="monthly_fee"/>
+                    <field name="amount_paid"/>
+                    <field name="remaining_balance"/>
+                    <field name="days_remaining" string="Días Rest."
+                           decoration-danger="days_remaining &lt;= 7 and days_remaining &gt;= 0"
+                           decoration-muted="days_remaining &lt; 0"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para Suscripciones -->
+        <record id="gym_subscription_form" model="ir.ui.view">
+            <field name="name">gym.subscription.form</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <form string="Suscripción">
+                    <header>
+                        <button name="action_activate" type="object" string="Activar" 
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_pause" type="object" string="Pausar" 
+                                class="btn-secondary" invisible="state != 'active'"/>
+                        <button name="action_cancel" type="object" string="Cancelar" 
+                                class="btn-danger" invisible="state not in ('draft','active','paused')"/>
+                        <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" required="1"/>
+                                <field name="plan_type"/>
+                                <field name="unlimited_classes"/>
+                            </group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="days_remaining" readonly="1"/>
+                            </group>
+                        </group>
+                        <separator string="Información Financiera"/>
+                        <group>
+                            <group>
+                                <field name="monthly_fee"/>
+                                <field name="discount"/>
+                                <field name="payment_method"/>
+                            </group>
+                            <group>
+                                <field name="amount_paid"/>
+                                <field name="remaining_balance" readonly="1"/>
+                            </group>
+                        </group>
+                        <separator string="Clases Incluidas"/>
+                        <field name="class_ids" widget="many2many_tags"/>
+                        <separator string="Descripción y Notas"/>
+                        <field name="description"/>
+                        <field name="notes"/>
+                        <field name="active" invisible="1"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda para Suscripciones -->
+        <record id="gym_subscription_search" model="ir.ui.view">
+            <field name="name">gym.subscription.search</field>
+            <field name="model">gym.subscription</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="partner_id" string="Socio"/>
+                    <field name="plan_type" string="Tipo de Plan"/>
+                    <separator/>
+                    <filter name="active_subs" string="Activas" domain="[('state', '=', 'active')]"/>
+                    <filter name="paused_subs" string="Pausadas" domain="[('state', '=', 'paused')]"/>
+                    <filter name="expired_subs" string="Expiradas" domain="[('state', '=', 'expired')]"/>
+                    <filter name="cancelled_subs" string="Canceladas" domain="[('state', '=', 'cancelled')]"/>
+                    <separator/>
+                    <filter name="pending_payment" string="Con saldo pendiente" domain="[('remaining_balance', '>', 0)]"/>
+                    <separator/>
+                    <filter name="group_partner" string="Socio" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_plan" string="Tipo de Plan" context="{'group_by': 'plan_type'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para abrir listado de Suscripciones -->
+        <record id="action_gym_subscription" model="ir.actions.act_window">
+            <field name="name">Suscripciones</field>
+            <field name="res_model">gym.subscription</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_create">
+                    Haz clic para crear una nueva suscripción
+                </p>
+            </field>
+        </record>
+
+        <!-- Menú para Suscripciones -->
+        <menuitem id="menu_gym_subscription" name="Suscripciones" 
+                  parent="menu_gym_root" action="action_gym_subscription" sequence="30"/>
+    </data>
+</odoo>

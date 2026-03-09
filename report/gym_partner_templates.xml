@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Template: Ficha de Inscripción del Socio -->
+        <template id="report_gym_partner_inscription">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h1>FICHA DE INSCRIPCIÓN - GIMNASIO</h1>
+                        <hr/>
+                        
+                        <h3>INFORMACIÓN DEL SOCIO</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Nombre:</strong></td>
+                                    <td><t t-out="doc.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tipo de Documento:</strong></td>
+                                    <td><t t-out="doc.id_type or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Número de Documento:</strong></td>
+                                    <td><t t-out="doc.id_number or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tipo de Sangre:</strong></td>
+                                    <td><t t-out="doc.blood_type or 'N/A'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>INFORMACIÓN DE CONTACTO</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Email:</strong></td>
+                                    <td><t t-out="doc.email or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Teléfono:</strong></td>
+                                    <td><t t-out="doc.phone or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Móvil:</strong></td>
+                                    <td><t t-out="doc.mobile or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dirección:</strong></td>
+                                    <td><t t-out="doc.get_address_formatted() or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Contacto de Emergencia:</strong></td>
+                                    <td><t t-out="doc.emergency_contact or 'N/A'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>INFORMACIÓN MÉDICA</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Alergias:</strong></td>
+                                    <td><t t-out="doc.allergies or 'Ninguna'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Condiciones Médicas:</strong></td>
+                                    <td><t t-out="doc.medical_conditions or 'Ninguna'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>SUSCRIPCIONES</h3>
+                        <t t-if="doc.subscription_ids">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Plan</th>
+                                        <th>Inicio</th>
+                                        <th>Vencimiento</th>
+                                        <th>Cuota</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.subscription_ids" t-as="sub">
+                                        <td><t t-out="sub.plan_type or 'N/A'"/></td>
+                                        <td><t t-out="sub.start_date or 'N/A'"/></td>
+                                        <td><t t-out="sub.end_date or 'N/A'"/></td>
+                                        <td>S/ <t t-out="sub.monthly_fee or '0.00'"/></td>
+                                        <td><t t-out="sub.state or 'N/A'"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p>No hay suscripciones registradas</p>
+                        </t>
+                        
+                        <hr/>
+                        <p style="text-align: center; margin-top: 40px; color: #666;">
+                            Documento generado automáticamente por Sistema de Gestión de Gimnasio
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Template: Recibo de Pago -->
+        <template id="report_gym_subscription_receipt">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h1>RECIBO DE PAGO</h1>
+                        <h2>GIMNASIO XYZ</h2>
+                        <hr/>
+                        
+                        <h3>DATOS DEL RECIBO</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Recibo Nº:</strong></td>
+                                    <td><t t-out="doc.id"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Socio:</strong></td>
+                                    <td><t t-out="doc.partner_id.name or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Documento:</strong></td>
+                                    <td><t t-out="doc.partner_id.id_number or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dirección:</strong></td>
+                                    <td><t t-out="doc.partner_id.get_address_formatted() or 'N/A'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>DETALLE DEL PAGO</h3>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong><t t-out="doc.plan_type or 'Plan'"/></strong><br/>
+                                        Período: <t t-out="doc.start_date or 'N/A'"/> a <t t-out="doc.end_date or 'N/A'"/>
+                                    </td>
+                                    <td>S/ <t t-out="doc.monthly_fee or '0.00'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>RESUMEN</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Monto Pagado:</strong></td>
+                                    <td>S/ <t t-out="doc.amount_paid or '0.00'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Saldo Pendiente:</strong></td>
+                                    <td>S/ <t t-out="doc.remaining_balance or '0.00'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Método de Pago:</strong></td>
+                                    <td><t t-out="doc.payment_method or 'N/A'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p style="margin-top: 20px;"><strong>Observaciones:</strong></p>
+                        <p>La suscripción vence el <t t-out="doc.end_date or ''"/> - Conserve este recibo como comprobante de pago.</p>
+                        
+                        <hr/>
+                        <p style="text-align: center; margin-top: 40px; color: #666;">
+                            Documento generado automáticamente por Sistema de Gestión de Gimnasio
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
