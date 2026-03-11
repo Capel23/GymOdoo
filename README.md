@@ -1,6 +1,8 @@
 # GymOdoo — Módulo de Gestión de Gimnasio para Odoo 19
 
 Módulo personalizado desarrollado en **Odoo 19.0** para la gestión integral de socios, suscripciones, clases e instructores de un gimnasio.
+
+---
 Video de demostración en YOUTUBE: https://www.youtube.com/watch?v=zezGepJbUsY
 ---
 
